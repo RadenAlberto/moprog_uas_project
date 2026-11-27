@@ -1,0 +1,59 @@
+name: project_uts
+description: "UNIQLO PLUS - aplikasi belanja LifeWear (tugas UAS)."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.2
+
+  # Dipakai oleh kode di lib/ tetapi sebelumnya TIDAK terdaftar (penyebab error):
+  shared_preferences: ^2.3.0 # lib/UTILS/prefs_store.dart
+  url_launcher: ^6.3.0 # lib/UTILS/external_link.dart
+  crypto: ^3.0.3 # lib/PROVIDERS/auth_provider.dart (hash password)
+
+  # Hanya dipakai oleh lib/DATABASE/db_helper.dart (tidak dijalankan saat start).
+  sqflite: ^2.4.6
+  path: ^1.9.1
+  path_provider: ^2.1.5 # lib/SERVICES/photo_store.dart (simpan foto lemari & OOTD)
+
+  # UNIQLO PLUS Stylist
+  http: ^1.2.2 # lib/SERVICES/api_service.dart (koneksi internet ke server)
+  camera: ^0.11.0 # lib/SERVICES/camera_session.dart (kamera depan/belakang/webcam)
+  camera_windows: ^0.2.6 # webcam laptop di Windows (camera belum mencakup Windows)
+  image_picker: ^1.1.2 # ambil foto dari galeri bila kamera tidak tersedia
+
+  # Foto produk Uniqlo: diunduh sekali lalu disimpan di perangkat (offline)
+  cached_network_image: ^3.4.1 # lib/WIDGETS/app_network_image.dart
+  flutter_cache_manager: ^3.4.1 # lib/SERVICES/image_cache.dart
+  flutter_map: ^8.3.2
+  latlong2: ^0.10.1
+  geolocator: ^14.1.2
+
+  # INSTRUCTION BOOK (PDF) di menu Informasi: buka & unduh
+  open_filex: ^4.7.0 # lib/SERVICES/manual_book_service.dart (buka PDF)
+  share_plus: ^13.3.1 # lib/SERVICES/manual_book_service.dart (simpan/bagikan PDF di HP)
+  cross_file: ^0.3.4 # XFile untuk share_plus
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/logo.png
+    - assets/data/products.json
+    - assets/data/ml_model.json
+    - assets/docs/INSTRUCTION_BOOK_ID.pdf
+    - assets/docs/INSTRUCTION_BOOK_EN.pdf

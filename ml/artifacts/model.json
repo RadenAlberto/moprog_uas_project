@@ -1,0 +1,281 @@
+{
+ "schema": 1,
+ "version": "2026.11.18-080806",
+ "trained_at": "2026-11-18T08:08:06.426170+00:00",
+ "components": {
+  "tone_color": {
+   "source": "trained:synthetic",
+   "table": {
+    "warm": {
+     "light": {
+      "black": 0.7665,
+      "white": 0.8369,
+      "grey": 0.7046,
+      "blue": 0.6399,
+      "teal": 0.4975,
+      "purple": 0.3774,
+      "pink": 0.4994,
+      "red": 0.8505,
+      "green": 0.8898,
+      "earth": 0.9905
+     },
+     "medium": {
+      "black": 0.7333,
+      "white": 0.8686,
+      "grey": 0.5816,
+      "blue": 0.5324,
+      "teal": 0.523,
+      "purple": 0.35,
+      "pink": 0.4608,
+      "red": 0.8941,
+      "green": 0.9,
+      "earth": 0.9724
+     },
+     "deep": {
+      "black": 0.7669,
+      "white": 0.9131,
+      "grey": 0.6191,
+      "blue": 0.6345,
+      "teal": 0.5685,
+      "purple": 0.3927,
+      "pink": 0.5349,
+      "red": 0.9145,
+      "green": 0.8895,
+      "earth": 0.9751
+     }
+    },
+    "cool": {
+     "light": {
+      "black": 0.9645,
+      "white": 0.9584,
+      "grey": 0.9586,
+      "blue": 0.9907,
+      "teal": 0.8937,
+      "purple": 0.9606,
+      "pink": 0.895,
+      "red": 0.6999,
+      "green": 0.5304,
+      "earth": 0.3737
+     },
+     "medium": {
+      "black": 0.9733,
+      "white": 0.9801,
+      "grey": 0.9105,
+      "blue": 1.0,
+      "teal": 0.8469,
+      "purple": 0.9203,
+      "pink": 0.8535,
+      "red": 0.7132,
+      "green": 0.5317,
+      "earth": 0.367
+     },
+     "deep": {
+      "black": 0.9186,
+      "white": 0.9964,
+      "grey": 0.9127,
+      "blue": 0.9638,
+      "teal": 0.9115,
+      "purple": 0.9441,
+      "pink": 0.914,
+      "red": 0.7554,
+      "green": 0.5283,
+      "earth": 0.377
+     }
+    },
+    "neutral": {
+     "light": {
+      "black": 0.9173,
+      "white": 0.925,
+      "grey": 0.9652,
+      "blue": 0.9524,
+      "teal": 0.857,
+      "purple": 0.7854,
+      "pink": 0.8603,
+      "red": 0.8497,
+      "green": 0.8351,
+      "earth": 0.9301
+     },
+     "medium": {
+      "black": 0.907,
+      "white": 0.9243,
+      "grey": 0.9382,
+      "blue": 0.8988,
+      "teal": 0.8368,
+      "purple": 0.7636,
+      "pink": 0.7722,
+      "red": 0.8496,
+      "green": 0.8638,
+      "earth": 0.9385
+     },
+     "deep": {
+      "black": 0.8994,
+      "white": 0.9884,
+      "grey": 0.8991,
+      "blue": 0.9734,
+      "teal": 0.9347,
+      "purple": 0.7904,
+      "pink": 0.8648,
+      "red": 0.9044,
+      "green": 0.8556,
+      "earth": 0.9212
+     }
+    }
+   }
+  },
+  "color_pair": {
+   "source": "prior:theory",
+   "matrix": {
+    "black": {
+     "black": 0.72,
+     "white": 0.8,
+     "grey": 0.8,
+     "blue": 0.88,
+     "teal": 0.88,
+     "purple": 0.88,
+     "pink": 0.88,
+     "red": 0.88,
+     "green": 0.88,
+     "earth": 0.8
+    },
+    "white": {
+     "black": 0.8,
+     "white": 0.72,
+     "grey": 0.8,
+     "blue": 0.88,
+     "teal": 0.88,
+     "purple": 0.88,
+     "pink": 0.88,
+     "red": 0.88,
+     "green": 0.88,
+     "earth": 0.8
+    },
+    "grey": {
+     "black": 0.8,
+     "white": 0.8,
+     "grey": 0.72,
+     "blue": 0.88,
+     "teal": 0.88,
+     "purple": 0.88,
+     "pink": 0.88,
+     "red": 0.88,
+     "green": 0.88,
+     "earth": 0.8
+    },
+    "blue": {
+     "black": 0.88,
+     "white": 0.88,
+     "grey": 0.88,
+     "blue": 0.7,
+     "teal": 0.3,
+     "purple": 0.3,
+     "pink": 0.6,
+     "red": 0.6,
+     "green": 0.6,
+     "earth": 0.88
+    },
+    "teal": {
+     "black": 0.88,
+     "white": 0.88,
+     "grey": 0.88,
+     "blue": 0.3,
+     "teal": 0.7,
+     "purple": 0.6,
+     "pink": 0.74,
+     "red": 0.74,
+     "green": 0.3,
+     "earth": 0.88
+    },
+    "purple": {
+     "black": 0.88,
+     "white": 0.88,
+     "grey": 0.88,
+     "blue": 0.3,
+     "teal": 0.6,
+     "purple": 0.7,
+     "pink": 0.3,
+     "red": 0.3,
+     "green": 0.74,
+     "earth": 0.88
+    },
+    "pink": {
+     "black": 0.88,
+     "white": 0.88,
+     "grey": 0.88,
+     "blue": 0.6,
+     "teal": 0.74,
+     "purple": 0.3,
+     "pink": 0.7,
+     "red": 0.78,
+     "green": 0.6,
+     "earth": 0.88
+    },
+    "red": {
+     "black": 0.88,
+     "white": 0.88,
+     "grey": 0.88,
+     "blue": 0.6,
+     "teal": 0.74,
+     "purple": 0.3,
+     "pink": 0.78,
+     "red": 0.7,
+     "green": 0.6,
+     "earth": 0.88
+    },
+    "green": {
+     "black": 0.88,
+     "white": 0.88,
+     "grey": 0.88,
+     "blue": 0.6,
+     "teal": 0.3,
+     "purple": 0.74,
+     "pink": 0.6,
+     "red": 0.6,
+     "green": 0.7,
+     "earth": 0.88
+    },
+    "earth": {
+     "black": 0.8,
+     "white": 0.8,
+     "grey": 0.8,
+     "blue": 0.88,
+     "teal": 0.88,
+     "purple": 0.88,
+     "pink": 0.88,
+     "red": 0.88,
+     "green": 0.88,
+     "earth": 0.72
+    }
+   }
+  }
+ },
+ "datasets": [
+  {
+   "id": "synthetic-personas",
+   "name": "Simulasi pengguna (teori analisis warna personal)",
+   "kind": "synthetic",
+   "rows": 90000,
+   "sha256": "100987ea59f7f644db6f690098e79bbc53ccf5cddb16317dc9bf34a4f0da547a",
+   "license": "dibuat sendiri",
+   "url": "",
+   "used_for": [
+    "tone_color"
+   ]
+  }
+ ],
+ "metrics": {
+  "tone_color": {
+   "train_rows_synthetic": 72000,
+   "train_rows_real": 0,
+   "test_rows": 18000,
+   "auc_learned": 0.6937,
+   "auc_theory_only": 0.6945,
+   "auc_global_mean": 0.5,
+   "logloss_learned": 0.5562,
+   "logloss_global_mean": 0.6117
+  },
+  "color_pair": {
+   "rows": 0,
+   "note": "Belum ada data outfit nyata; memakai aturan roda warna."
+  }
+ }
+}

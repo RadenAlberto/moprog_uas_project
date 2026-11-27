@@ -1,0 +1,121 @@
+{
+  "news": [
+    {
+      "id": "n1",
+      "title": "Promo Akhir Tahun: Diskon Hingga 30%",
+      "summary": "Jaket, jeans, dan fleece pilihan turun harga selama periode promo akhir tahun.",
+      "content": "Sambut akhir tahun dengan koleksi LifeWear pilihan yang kini tersedia dengan harga spesial. Promo dapat berubah sewaktu-waktu dan stok terbatas.",
+      "image": "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=1000",
+      "category": "promo",
+      "date": "2026-10-14T00:00:00",
+      "is_pinned": true,
+      "action": "catalog",
+      "action_label": "Belanja Sekarang",
+      "published": true
+    },
+    {
+      "id": "n2",
+      "title": "Gabung Member LifeWear, Dapatkan 200 Poin Gratis",
+      "summary": "Daftar sekarang untuk diskon otomatis, kumpulkan poin, dan lacak riwayat pembelian Anda.",
+      "content": "Menjadi member LifeWear gratis. Setelah mendaftar, Anda mendapat 200 poin bonus dan dapat memantau riwayat pembelian di aplikasi.",
+      "image": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1000",
+      "category": "member",
+      "date": "2026-10-13T00:00:00",
+      "is_pinned": true,
+      "action": "membership",
+      "action_label": "Buka Keanggotaan",
+      "published": true
+    },
+    {
+      "id": "n3",
+      "title": "Koleksi HEATTECH untuk Musim Hujan",
+      "summary": "Tetap hangat dan nyaman saat cuaca dingin dengan lapisan dalam HEATTECH.",
+      "content": "HEATTECH Crew Neck T-Shirt dirancang sebagai lapisan dalam yang tipis namun hangat dan mudah dipadukan.",
+      "image": "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=1000",
+      "category": "koleksi",
+      "date": "2026-10-12T00:00:00",
+      "is_pinned": true,
+      "action": "catalog",
+      "action_label": "Lihat Koleksi",
+      "published": true
+    },
+    {
+      "id": "n4",
+      "title": "Cara Naik Level Member: Silver, Gold, Platinum",
+      "summary": "Level ditentukan dari total belanja kumulatif. Ini syarat dan keuntungannya.",
+      "content": "Level member dihitung otomatis dari total belanja kumulatif. Pantau progres level Anda di halaman Keanggotaan.",
+      "image": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=1000",
+      "category": "info",
+      "date": "2026-10-10T00:00:00",
+      "is_pinned": false,
+      "action": "membership",
+      "action_label": "Lihat Keuntungan Member",
+      "published": true
+    },
+    {
+      "id": "n5",
+      "title": "Weekend Sale: Voucher Tambahan untuk Member",
+      "summary": "Gunakan voucher HEMAT50 untuk potongan Rp50.000 khusus member.",
+      "content": "Member dapat memakai voucher HEMAT50 dengan minimal belanja Rp500.000. Syarat dan ketentuan berlaku.",
+      "image": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?q=80&w=1000",
+      "category": "event",
+      "date": "2026-10-09T00:00:00",
+      "is_pinned": false,
+      "action": "vouchers",
+      "action_label": "Lihat Voucher",
+      "published": true
+    },
+    {
+      "id": "n6",
+      "title": "Koleksi Baru: Blouse & Celana Pleats Wanita",
+      "summary": "Tampilan rapi dan nyaman untuk kerja maupun akhir pekan.",
+      "content": "Koleksi wanita terbaru hadir dengan Rayon Blouse dan Pleated Wide Pants yang nyaman untuk berbagai kegiatan.",
+      "image": "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?q=80&w=1000",
+      "category": "koleksi",
+      "date": "2026-10-07T00:00:00",
+      "is_pinned": false,
+      "action": "catalog",
+      "action_label": "Lihat Koleksi",
+      "published": true
+    },
+    {
+      "id": "n7",
+      "title": "Gratis Ongkir dengan Kode ONGKIRFREE",
+      "summary": "Bebas ongkos kirim untuk semua pesanan minimal Rp150.000.",
+      "content": "Masukkan kode ONGKIRFREE di halaman checkout untuk menggratiskan ongkos kirim dengan minimal belanja Rp150.000.",
+      "image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1000",
+      "category": "promo",
+      "date": "2026-10-05T00:00:00",
+      "is_pinned": false,
+      "action": "vouchers",
+      "action_label": "Lihat Voucher",
+      "published": true
+    },
+    {
+      "id": "n8",
+      "title": "Panduan Memilih Ukuran & Penukaran",
+      "summary": "Tips memilih ukuran yang pas agar nyaman dipakai sehari-hari.",
+      "content": "Bandingkan ukuran pakaian yang paling nyaman Anda pakai. Pantau status pesanan di halaman Riwayat Pembelian.",
+      "image": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1000",
+      "category": "info",
+      "date": "2026-10-02T00:00:00",
+      "is_pinned": false,
+      "action": "none",
+      "action_label": "",
+      "published": true
+    },
+    {
+      "id": "n9",
+      "title": "Fleece Hangat untuk Perjalanan Anda",
+      "summary": "Ringan, lembut, dan mudah dibawa untuk perjalanan jarak dekat maupun jauh.",
+      "content": "Fleece Full-Zip Jacket menghadirkan kehangatan tanpa bobot berlebih dan mudah dipadukan dengan berbagai gaya.",
+      "image": "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?q=80&w=1000",
+      "category": "koleksi",
+      "date": "2026-09-28T00:00:00",
+      "is_pinned": false,
+      "action": "catalog",
+      "action_label": "Belanja Sekarang",
+      "published": true
+    }
+  ]
+}

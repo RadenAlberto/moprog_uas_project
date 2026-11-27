@@ -1,0 +1,56 @@
+{
+  "vouchers": [
+    {
+      "code": "LIFEWEAR10",
+      "title": "Diskon 10% Semua Produk",
+      "description": "Berlaku untuk semua pengguna, tanpa harus menjadi member.",
+      "type": "percent",
+      "value": 10,
+      "max_discount": 100000,
+      "min_spend": 300000,
+      "member_only": false,
+      "min_tier": null,
+      "expires_at": "2027-12-31T23:59:00",
+      "active": true
+    },
+    {
+      "code": "ONGKIRFREE",
+      "title": "Gratis Ongkir",
+      "description": "Bebas ongkos kirim untuk pesanan ke seluruh Indonesia.",
+      "type": "freeShipping",
+      "value": 0,
+      "max_discount": null,
+      "min_spend": 150000,
+      "member_only": false,
+      "min_tier": null,
+      "expires_at": "2027-12-31T23:59:00",
+      "active": true
+    },
+    {
+      "code": "HEMAT50",
+      "title": "Potongan Rp50.000 Khusus Member",
+      "description": "Hanya untuk member yang sudah masuk (login).",
+      "type": "fixed",
+      "value": 50000,
+      "max_discount": null,
+      "min_spend": 500000,
+      "member_only": true,
+      "min_tier": null,
+      "expires_at": "2027-12-31T23:59:00",
+      "active": true
+    },
+    {
+      "code": "GOLDSPECIAL",
+      "title": "Diskon 15% Member Gold & Platinum",
+      "description": "Voucher eksklusif untuk member level Gold ke atas.",
+      "type": "percent",
+      "value": 15,
+      "max_discount": 250000,
+      "min_spend": 800000,
+      "member_only": true,
+      "min_tier": "gold",
+      "expires_at": "2027-12-31T23:59:00",
+      "active": true
+    }
+  ]
+}

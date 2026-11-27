@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UNIQLO PLUS - Control Panel</title>
+<style>
+:root{--red:#ec1c24;--ink:#16191d;--mut:#6b7280;--line:#e5e7eb;--bg:#f4f5f7;--card:#fff;--ok:#15803d;--warn:#b45309;--err:#b91c1c;--blue:#1d4ed8;--side:#111418;--r:10px}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--blue)}
+.hidden{display:none!important}
+/* login */
+#login{min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,#0d1213,#1d2429)}
+.login-card{background:#fff;width:min(380px,92vw);padding:32px;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
+.logo{width:34px;height:34px;background:var(--red);color:#fff;display:grid;place-items:center;border-radius:6px;font-weight:900;font-size:13px}
+/* shell */
+#app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--side);color:#cbd2d9;padding:18px 12px;position:sticky;top:0;height:100vh;overflow:auto}
+aside .brand{color:#fff;padding:4px 8px 18px}
+nav button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;color:inherit;padding:10px 12px;border-radius:8px;cursor:pointer}
+nav button:hover{background:#1c2127}
+nav button.on{background:var(--red);color:#fff}
+nav .grp{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#6b7580;margin:16px 12px 6px}
+main{min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 24px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top h1{font-size:18px;margin:0}
+.who{display:flex;align-items:center;gap:10px;color:var(--mut)}
+.content{padding:24px;max-width:1300px}
+/* ui */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.kpi .n{font-size:28px;font-weight:800}
+.kpi .l{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.two{grid-template-columns:2fr 1fr}.cols2{grid-template-columns:1fr 1fr}
+@media(max-width:900px){#app{grid-template-columns:1fr}aside{position:static;height:auto}.two,.cols2{grid-template-columns:1fr}}
+.btn{border:1px solid var(--line);background:#fff;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+.btn:hover{background:#f3f4f6}
+.btn.pri{background:var(--red);border-color:var(--red);color:#fff}.btn.pri:hover{background:#c8151c}
+.btn.dng{color:var(--err);border-color:#f3c9c9}.btn.sm{padding:4px 10px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.bar .sp{flex:1}
+input,select,textarea{border:1px solid #d1d5db;border-radius:8px;padding:8px 10px;background:#fff;width:100%}
+.bar input,.bar select{width:auto;min-width:150px}
+input:focus,select:focus,textarea:focus{outline:2px solid #fca5a5;border-color:var(--red)}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut);background:#fafafa;white-space:nowrap}
+tr:hover td{background:#fcfcfd}
+.tw{overflow:auto;border:1px solid var(--line);border-radius:var(--r);background:#fff}
+.thumb{width:40px;height:52px;object-fit:cover;border-radius:4px;background:#eee}
+.tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700;background:#eef2ff;color:#3730a3}
+.tag.ok{background:#dcfce7;color:var(--ok)}.tag.warn{background:#fef3c7;color:var(--warn)}.tag.err{background:#fee2e2;color:var(--err)}.tag.gr{background:#e5e7eb;color:#374151}
+.mut{color:var(--mut)}.right{text-align:right}.nowrap{white-space:nowrap}
+.pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:12px;color:var(--mut)}
+.empty{padding:40px;text-align:center;color:var(--mut)}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(15,18,22,.55);display:grid;place-items:center;z-index:50;padding:16px}
+.modal{background:#fff;border-radius:14px;width:min(760px,100%);max-height:92vh;display:flex;flex-direction:column}
+.modal.sm{width:min(440px,100%)}
+.modal header{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.modal header h3{margin:0;font-size:16px}
+.modal .bd{padding:18px 20px;overflow:auto}
+.modal footer{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.form .full{grid-column:1/-1}
+.form label{display:block;font-weight:600;font-size:12px;margin-bottom:4px;color:#374151}
+.form .hint{font-size:11px;color:var(--mut);margin-top:3px}
+.chk{display:flex;gap:8px;align-items:center}.chk input{width:auto}
+.crow{display:grid;grid-template-columns:70px 1fr 52px 1.6fr 30px;gap:6px;margin-bottom:6px}
+.crow input[type=color]{padding:2px;height:36px}
+#toasts{position:fixed;right:16px;bottom:16px;display:grid;gap:8px;z-index:99}
+.toast{background:#111827;color:#fff;padding:10px 16px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:380px}
+.toast.err{background:var(--err)}.toast.ok{background:var(--ok)}
+pre{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;max-height:380px;white-space:pre-wrap}
+.bars .row{display:grid;grid-template-columns:130px 1fr 44px;gap:8px;align-items:center;margin:5px 0;font-size:12px}
+.bars .b{height:10px;background:#fecaca;border-radius:6px;overflow:hidden}.bars .b i{display:block;height:100%;background:var(--red)}
+.note{background:#fffbeb;border:1px solid #fde68a;color:#78350f;padding:10px 14px;border-radius:8px;font-size:13px}
+.note.info{background:#eff6ff;border-color:#bfdbfe;color:#1e3a8a}
+.err-box{color:var(--err);font-size:13px;min-height:18px;margin:8px 0}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <form class="login-card" id="loginForm" autocomplete="on">
+    <div class="brand"><span class="logo">UQ</span><span>UNIQLO PLUS &middot; Control Panel</span></div>
+    <p class="mut" style="margin:14px 0 18px">Masuk dengan akun administrator.</p>
+    <label for="lu" style="font-weight:600;font-size:12px">Username</label>
+    <input id="lu" autocomplete="username" required autofocus>
+    <label for="lp" style="font-weight:600;font-size:12px;display:block;margin-top:12px">Password</label>
+    <input id="lp" type="password" autocomplete="current-password" required>
+    <div class="err-box" id="lerr"></div>
+    <button class="btn pri" style="width:100%" id="lbtn">Masuk</button>
+  </form>
+</div>
+
+<div id="app" class="hidden">
+  <aside>
+    <div class="brand"><span class="logo">UQ</span><span>PLUS Admin</span></div>
+    <nav id="nav"></nav>
+  </aside>
+  <main>
+    <div class="top"><h1 id="title"></h1>
+      <div class="who"><span id="who"></span><button class="btn sm" id="pwBtn">Ganti password</button><button class="btn sm" id="outBtn">Keluar</button></div>
+    </div>
+    <div class="content" id="view"></div>
+  </main>
+</div>
+<div id="toasts"></div>
+
+<script>
+'use strict';
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rp=n=>n==null||n===''?'-':'Rp '+Math.round(+n).toLocaleString('id-ID');
+const dt=t=>{if(t===null||t===undefined||t==='')return '-';const numeric=typeof t==='number'||/^\\d+(\\.\\d+)?$/.test(String(t));const d=numeric?new Date(Number(t)*1000):new Date(String(t));return Number.isNaN(d.getTime())?'Tanggal tidak valid':d.toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'});};
+let TOKEN=sessionStorage.getItem('uplus_admin')||'', ME=null;
+
+async function api(method,path,body){
+  const r=await fetch('/admin/api'+path,{method,headers:{'Content-Type':'application/json',...(TOKEN?{Authorization:'Bearer '+TOKEN}:{})},body:body===undefined?undefined:JSON.stringify(body)});
+  let j={};try{j=await r.json()}catch(e){}
+  if(r.status===401&&path!=='/login'){logout(true);throw new Error(j.error||'Sesi berakhir')}
+  if(!r.ok)throw new Error(j.error||('Error '+r.status));
+  return j;
+}
+function toast(msg,kind=''){const t=document.createElement('div');t.className='toast '+kind;t.textContent=msg;$('#toasts').append(t);setTimeout(()=>t.remove(),4200)}
+const can=role=>({admin:1,owner:2}[ME.role]>={admin:1,owner:2}[role]);
+
+/* ---------- modal helpers ---------- */
+function modal({title,body,actions=[],small=false,onclose}){
+  const ov=document.createElement('div');ov.className='ov';
+  ov.innerHTML=`<div class="modal ${small?'sm':''}" role="dialog" aria-modal="true"><header><h3>${esc(title)}</h3><button class="btn sm" data-x>&times;</button></header><div class="bd"></div><footer></footer></div>`;
+  const bd=$('.bd',ov);typeof body==='string'?bd.innerHTML=body:bd.append(body);
+  const close=()=>{ov.remove();onclose&&onclose()};
+  $('[data-x]',ov).onclick=close;ov.addEventListener('mousedown',e=>{if(e.target===ov)close()});
+  const ft=$('footer',ov);
+  actions.forEach(a=>{const b=document.createElement('button');b.className='btn '+(a.cls||'');b.textContent=a.label;b.onclick=async()=>{b.disabled=true;try{const r=await a.run(ov);if(r!==false)close()}catch(e){toast(e.message,'err')}finally{b.disabled=false}};ft.append(b)});
+  if(!actions.length)ft.remove();
+  document.body.append(ov);return {ov,close};
+}
+function confirmBox(msg,label='Hapus',cls='dng'){return new Promise(res=>{let done=false;const m=modal({title:'Konfirmasi',small:true,body:`<p>${esc(msg)}</p>`,onclose:()=>{if(!done)res(false)},actions:[{label:'Batal',run:()=>{}},{label,cls,run:()=>{done=true;res(true)}}]})})}
+
+/* ---------- form builder ---------- */
+function fieldHtml(f,v){
+  const id='f_'+f.name,val=v??f.def??'';
+  let inp;
+  if(f.type==='textarea')inp=`<textarea id="${id}" rows="${f.rows||3}">${esc(Array.isArray(val)?val.join('\n'):val)}</textarea>`;
+  else if(f.type==='select')inp=`<select id="${id}">${f.options.map(o=>{const [ov,ol]=Array.isArray(o)?o:[o,o];return `<option value="${esc(ov)}" ${String(ov)===String(val)?'selected':''}>${esc(ol)}</option>`}).join('')}</select>`;
+  else if(f.type==='check')return `<div class="${f.full?'full':''}"><label class="chk"><input type="checkbox" id="${id}" ${val?'checked':''}> ${esc(f.label)}</label></div>`;
+  else inp=`<input id="${id}" type="${f.type||'text'}" value="${esc(val)}" ${f.ro?'readonly':''} ${f.step?`step="${f.step}"`:''}>`;
+  return `<div class="${f.full?'full':''}"><label for="${id}">${esc(f.label)}${f.req?' *':''}</label>${inp}${f.hint?`<div class="hint">${esc(f.hint)}</div>`:''}</div>`;
+}
+function readForm(root,fields){
+  const o={};
+  for(const f of fields){const el=$('#f_'+f.name,root);if(!el)continue;
+    if(f.type==='check')o[f.name]=el.checked;else if(f.type==='number')o[f.name]=el.value===''?null:+el.value;else o[f.name]=el.value}
+  return o;
+}
+function formModal({title,fields,values={},submit,extra}){
+  const body=document.createElement('div');
+  body.innerHTML=`<div class="form">${fields.map(f=>fieldHtml(f,values[f.name])).join('')}</div>${extra?'<div id="extra"></div>':''}`;
+  if(extra)extra(body);
+  return modal({title,body,actions:[{label:'Batal',run:()=>{}},{label:'Simpan',cls:'pri',run:async ov=>{await submit(readForm(ov,fields),ov)}}]});
+}
+
+/* ---------- generic list (tabel + cari + halaman) ---------- */
+function listView(el,{path,cols,filters=[],search=true,perPage=20,actions,toolbar,empty='Belum ada data.',paged=true,pre}){
+  const st={page:1,q:'',f:{}};
+  el.innerHTML=`<div class="bar"></div><div class="tw"><table><thead></thead><tbody></tbody></table></div><div class="pager"></div>`;
+  const bar=$('.bar',el),tb=$('tbody',el),pg=$('.pager',el);
+  $('thead',el).innerHTML='<tr>'+cols.map(c=>`<th class="${c.cls||''}">${esc(c.label)}</th>`).join('')+(actions?'<th></th>':'')+'</tr>';
+  if(search){const i=document.createElement('input');i.placeholder='Cari...';let t;i.oninput=()=>{clearTimeout(t);t=setTimeout(()=>{st.q=i.value;st.page=1;load()},300)};bar.append(i)}
+  filters.forEach(f=>{const s=document.createElement('select');s.dataset.k=f.key;s.onchange=()=>{st.f[f.key]=s.value;st.page=1;load()};s.innerHTML=`<option value="">${esc(f.label)}</option>`+(f.options||[]).map(o=>`<option>${esc(o)}</option>`).join('');bar.append(s)});
+  const sp=document.createElement('span');sp.className='sp';bar.append(sp);
+  toolbar&&toolbar(bar,load);
+  let data=null;
+  async function load(){
+    const qs=new URLSearchParams({page:st.page,per_page:perPage});
+    if(st.q)qs.set('q',st.q);Object.entries(st.f).forEach(([k,v])=>v&&qs.set(k,v));
+    try{data=await api('GET',path+(path.includes('?')?'&':'?')+qs)}catch(e){tb.innerHTML=`<tr><td colspan="9" class="empty">${esc(e.message)}</td></tr>`;return}
+    const items=data.items;
+    filters.forEach(f=>{if(f.from&&data[f.from]){const s=$(`select[data-k="${f.key}"]`,bar);if(s&&s.options.length===1){data[f.from].forEach(o=>s.append(new Option(o,o)))}}});
+    tb.innerHTML=items.length?'':`<tr><td colspan="${cols.length+1}" class="empty">${esc(empty)}</td></tr>`;
+    items.forEach(it=>{const tr=document.createElement('tr');tr.innerHTML=cols.map(c=>`<td class="${c.cls||''}">${c.render?c.render(it):esc(it[c.key])}</td>`).join('')+(actions?'<td class="right nowrap"></td>':'');
+      if(actions){const td=tr.lastElementChild;actions(it,load).forEach(a=>{if(a.show===false)return;const b=document.createElement('button');b.className='btn sm '+(a.cls||'');b.textContent=a.label;b.style.marginLeft='6px';b.onclick=()=>a.run();td.append(b)})}
+      tb.append(tr)});
+    const pages=Math.max(1,Math.ceil(data.total/data.per_page));
+    pg.innerHTML=paged?`<span>${data.total} data &middot; halaman ${data.page}/${pages}</span>`:'';
+    if(paged){const p=document.createElement('button'),n=document.createElement('button');p.className=n.className='btn sm';p.textContent='‹ Sebelumnya';n.textContent='Berikutnya ›';p.disabled=st.page<=1;n.disabled=st.page>=pages;p.onclick=()=>{st.page--;load()};n.onclick=()=>{st.page++;load()};pg.append(p,n)}
+  }
+  load();return load;
+}
+/* daftar sederhana (tanpa paging server): data = {items:[]} */
+function simpleList(el,{path,cols,actions,toolbar,empty}){
+  el.innerHTML=`<div class="bar"></div><div class="tw"><table><thead></thead><tbody></tbody></table></div>`;
+  const bar=$('.bar',el),tb=$('tbody',el);
+  $('thead',el).innerHTML='<tr>'+cols.map(c=>`<th>${esc(c.label)}</th>`).join('')+(actions?'<th></th>':'')+'</tr>';
+  const sp=document.createElement('span');sp.className='sp';bar.append(sp);
+  async function load(){
+    let d;try{d=await api('GET',path)}catch(e){tb.innerHTML=`<tr><td colspan="9" class="empty">${esc(e.message)}</td></tr>`;return}
+    tb.innerHTML=d.items.length?'':`<tr><td colspan="${cols.length+1}" class="empty">${esc(empty||'Belum ada data.')}</td></tr>`;
+    d.items.forEach(it=>{const tr=document.createElement('tr');tr.innerHTML=cols.map(c=>`<td>${c.render?c.render(it):esc(it[c.key])}</td>`).join('')+(actions?'<td class="right nowrap"></td>':'');
+      if(actions){const td=tr.lastElementChild;actions(it,load).forEach(a=>{if(a.show===false)return;const b=document.createElement('button');b.className='btn sm '+(a.cls||'');b.textContent=a.label;b.style.marginLeft='6px';b.onclick=()=>a.run();td.append(b)})}
+      tb.append(tr)});
+  }
+  toolbar&&toolbar(bar,load);load();return load;
+}
+
+/* ================= HALAMAN ================= */
+const PAGES={};
+
+/* ---- dashboard ---- */
+PAGES.dashboard={title:'Dashboard',async render(v){
+  const d=await api('GET','/dashboard'),c=d.counts;
+  const kp=(n,l)=>`<div class="card kpi"><div class="n">${(+n).toLocaleString('id-ID')}</div><div class="l">${l}</div></div>`;
+  const max=Math.max(1,...d.series.map(s=>Math.max(s.feedback,s.users)));
+  const W=640,H=170,bw=W/d.series.length;
+  const bars=d.series.map((s,i)=>{const h1=s.feedback/max*(H-30),h2=s.users/max*(H-30);return `<rect x="${i*bw+6}" y="${H-20-h1}" width="${bw/2-8}" height="${h1}" fill="#ec1c24" rx="2"><title>${s.date}: ${s.feedback} umpan balik</title></rect><rect x="${i*bw+bw/2-1}" y="${H-20-h2}" width="${bw/2-8}" height="${h2}" fill="#1d4ed8" rx="2"><title>${s.date}: ${s.users} user baru</title></rect><text x="${i*bw+bw/2}" y="${H-5}" font-size="9" text-anchor="middle" fill="#6b7280">${s.date}</text>`}).join('');
+  const bars2=(arr,k,lab)=>{const m=Math.max(1,...arr.map(x=>x[k]));return arr.map(x=>`<div class="row"><span title="${esc(x[lab])}">${esc(String(x[lab]).slice(0,18))}</span><span class="b"><i style="width:${x[k]/m*100}%"></i></span><b>${x[k]}</b></div>`).join('')||'<div class="mut">Belum ada data.</div>'};
+  const m=d.model;
+  const ml=m?`<p><b>Versi ${esc(m.version)}</b> <span class="tag gr">${esc(m.origin)}</span></p>`+Object.entries(m.sources).map(([k,s])=>`<div class="nowrap">${esc(k)} <span class="tag ${s.startsWith('trained:real')?'ok':s.startsWith('trained')?'warn':'gr'}">${esc(s)}</span></div>`).join(''):`<p class="mut">Memakai model bawaan aplikasi (assets/data/ml_model.json). Unggah atau latih model di menu Model ML.</p>`;
+  v.innerHTML=`<div class="grid kpis">${kp(c.products,'Produk')}${kp(c.users,'Member')}${kp(c.users_7d,'Member baru 7 hari')}${kp(c.profiles,'Profil gaya')}${kp(c.feedback,'Umpan balik')}${kp(c.vouchers,'Voucher aktif')}${kp(c.news,'Berita tayang')}${kp(c.stores,'Toko (server)')}</div>
+  <div class="grid kpis" style="margin-top:12px">${kp(c.orders,'Pesanan')}${kp(c.order_items,'Item pesanan')}${kp(c.addresses,'Alamat')}${kp(c.cart_items,'Keranjang')}${kp(c.wishlist,'Wishlist')}${kp(c.activities,'Aktivitas member')}${kp(c.points,'Transaksi poin')}${kp(c.reviews,'Ulasan produk')}</div>
+  <div class="grid two" style="margin-top:16px"><div class="card"><b>Aktivitas 14 hari</b> <span class="mut" style="font-size:12px"><span style="color:#ec1c24">&#9632;</span> umpan balik <span style="color:#1d4ed8">&#9632;</span> member baru</span><svg viewBox="0 0 ${W} ${H}" width="100%" style="margin-top:10px">${bars}</svg></div>
+  <div class="card"><b>Model ML aktif</b><div style="margin-top:8px">${ml}</div></div></div>
+  <div class="grid cols2" style="margin-top:16px"><div class="card bars"><b>Produk paling diminati</b>${bars2(d.top_products.map(p=>({...p,score:Math.round(p.score*10)/10})),'score','name')}</div>
+  <div class="card bars"><b>Produk per kategori</b>${bars2(d.categories,'n','label')}</div></div>
+  <div class="card bars" style="margin-top:16px"><b>Profil kulit pengguna (undertone/kedalaman)</b>${bars2(Object.entries(d.profiles_by_skin).map(([k,n])=>({k,n})),'n','k')}</div>`;
+}};
+
+/* ---- produk ---- */
+const argbHex=a=>'#'+((a>>>0)&0xffffff).toString(16).padStart(6,'0');
+const hexArgb=h=>(0xff000000|parseInt(h.slice(1),16))>>>0;
+PAGES.products={title:'Produk',render(v){
+  const base=[{name:'id',label:'ID produk',req:true},{name:'name',label:'Nama',req:true},{name:'price',label:'Harga (Rp)',type:'number',req:true},{name:'original_price',label:'Harga normal / coret (Rp)',type:'number',hint:'Kosongkan bila tidak diskon'},
+    {name:'category',label:'Kategori',req:true},{name:'audience',label:'Target (Men/Women/Unisex/Kids/Baby)',req:true},{name:'image',label:'URL foto utama',full:true},
+    {name:'description',label:'Deskripsi',type:'textarea',full:true},{name:'sizes',label:'Ukuran (pisah koma)',full:true},{name:'features',label:'Label teknologi (AIRism, HEATTECH, ...)'},{name:'url',label:'URL halaman produk'},
+    {name:'rating_average',label:'Rating',type:'number',step:'0.1'},{name:'rating_count',label:'Jumlah ulasan',type:'number'},{name:'gallery',label:'Galeri foto (satu URL per baris)',type:'textarea',full:true},{name:'is_new',label:'Tandai BARU',type:'check'}];
+  const open=(p,reload)=>{
+    const isNew=!p;const vals=p?{...p,sizes:p.sizes.join(', '),features:p.features.join(', '),gallery:p.gallery}:{audience:'Unisex',price:0};
+    const rows=(p?p.colors.map((c,i)=>({code:p.color_codes[i],name:p.color_names[i],hex:argbHex(c),img:p.color_images[i]})):[]);
+    const fields=isNew?base:base.map(f=>f.name==='id'?{...f,ro:true}:f);
+    formModal({title:isNew?'Tambah produk':'Edit produk',fields,values:vals,
+      extra:b=>{const w=document.createElement('div');w.className='full';w.style.marginTop='14px';
+        w.innerHTML='<label style="font-weight:600;font-size:12px">Warna produk (kode, nama, warna, foto sesuai warna)</label><div id="crows"></div><button type="button" class="btn sm" id="addc">+ Tambah warna</button>';
+        $('#extra',b).append(w);const box=$('#crows',w);
+        const add=(r={code:'',name:'',hex:'#000000',img:''})=>{const d=document.createElement('div');d.className='crow';d.innerHTML=`<input placeholder="Kode" value="${esc(r.code)}"><input placeholder="Nama warna" value="${esc(r.name)}"><input type="color" value="${esc(r.hex)}"><input placeholder="URL foto warna" value="${esc(r.img)}"><button type="button" class="btn sm dng">&times;</button>`;$('button',d).onclick=()=>d.remove();box.append(d)};
+        rows.forEach(add);$('#addc',w).onclick=()=>add()},
+      submit:async(o,ov)=>{
+        const cr=[...$('#crows',ov).children].map(d=>{const i=d.querySelectorAll('input');return {code:i[0].value.trim(),name:i[1].value.trim(),hex:i[2].value,img:i[3].value.trim()}});
+        const payload={...o,sizes:o.sizes,features:o.features,gallery:o.gallery,colors:cr.map(c=>hexArgb(c.hex)),color_names:cr.map(c=>c.name),color_codes:cr.map(c=>c.code||String(cr.indexOf(c))),color_images:cr.map(c=>c.img)};
+        if(isNew)await api('POST','/products',payload);else await api('PUT','/products/'+encodeURIComponent(p.id),payload);
+        toast('Produk disimpan','ok');reload();}});
+  };
+  const toolbar=(bar,reload)=>{
+    if(can('admin')){const a=document.createElement('button');a.className='btn pri';a.textContent='+ Produk';a.onclick=()=>open(null,reload);bar.append(a);
+      const imp=document.createElement('button');imp.className='btn';imp.textContent='Impor JSON';imp.onclick=()=>{const f=document.createElement('input');f.type='file';f.accept='.json';f.onchange=async()=>{try{const j=JSON.parse(await f.files[0].text());const r=await api('POST','/products/bulk',{products:Array.isArray(j)?j:j.products});toast(`${r.imported} produk diimpor, ${r.error_count} gagal`,r.error_count?'err':'ok');if(r.errors.length)modal({title:'Kesalahan impor',body:`<pre>${esc(JSON.stringify(r.errors,null,1))}</pre>`});reload()}catch(e){toast(e.message,'err')}};f.click()};bar.append(imp)}
+    const ex=document.createElement('button');ex.className='btn';ex.textContent='Ekspor JSON';ex.onclick=async()=>{const r=await api('GET','/products/export');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(r.products,null,1)],{type:'application/json'}));a.download='products.json';a.click()};bar.append(ex)};
+  listView(v,{path:'/products',perPage:15,toolbar,
+    filters:[{key:'category',label:'Semua kategori',from:'categories'},{key:'audience',label:'Semua target',from:'audiences'}],
+    cols:[{label:'Foto',render:p=>p.image?`<img class="thumb" loading="lazy" src="${esc(p.image)}" alt="" referrerpolicy="no-referrer">`:'<div class="thumb"></div>'},
+      {label:'Produk',render:p=>`<b>${esc(p.name)}</b><div class="mut" style="font-size:12px">${esc(p.id)}</div>`},{label:'Kategori',key:'category'},{label:'Target',key:'audience'},
+      {label:'Harga',cls:'nowrap',render:p=>(p.original_price&&p.original_price>p.price?`<s class="mut">${rp(p.original_price)}</s><br>`:'')+rp(p.price)},
+      {label:'Warna',render:p=>p.colors.slice(0,8).map(c=>`<span title="" style="display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:2px;border:1px solid #ccc;background:${argbHex(c)}"></span>`).join('')},
+      {label:'Status',render:p=>(p.is_new?'<span class="tag ok">BARU</span> ':'')+(p.original_price&&p.original_price>p.price?'<span class="tag err">PROMO</span>':'')}],
+    actions:(p,reload)=>[{label:'Edit',run:()=>open(p,reload),show:can('admin')},{label:'Hapus',cls:'dng',show:can('admin'),run:async()=>{if(await confirmBox(`Hapus produk "${p.name}"? Varian dan umpan balik terkait ikut terhapus.`)){await api('DELETE','/products/'+encodeURIComponent(p.id));toast('Produk dihapus','ok');reload()}}}]});
+}};
+
+/* ---- pengguna ---- */
+PAGES.users={title:'Pengguna (Member)',render(v){
+  const detail=async(u)=>{const d=await api('GET','/users/'+u.id);const p=d.profile;
+    modal({title:d.user.name,body:`<p class="mut">${esc(d.user.email)} &middot; ${esc(d.user.phone||'-')} &middot; daftar ${dt(d.user.created_at)}</p><p>Alamat: ${esc(d.user.address||'-')}<br>Kode member: ${esc(d.user.member_code||'-')} &middot; Saldo poin: <b>${esc(d.user.points_balance||0)} poin</b> · Level: <b>${esc(d.user.tier||'regular')}</b><br>Total belanja selesai: ${rp(d.user.total_spend||0)}</p>
+    <h4>Profil gaya</h4>${p?`<table><tr><th>Gender</th><td>${esc(p.gender)}</td><th>Tinggi/Berat</th><td>${p.heightCm} cm / ${p.weightKg} kg</td></tr><tr><th>Wajah</th><td>${esc(p.faceShape||'-')}</td><th>Kulit</th><td>${esc(p.depth||'-')} / ${esc(p.undertone||'-')}</td></tr><tr><th>Kebutuhan</th><td>${esc((p.goals||[]).join(', '))}</td><th>Maks harga</th><td>${rp(p.maxPrice)}</td></tr></table>`:'<p class="mut">Belum membuat profil gaya.</p>'}
+    <h4>Umpan balik terakhir</h4>${d.feedback.length?`<table>${d.feedback.map(f=>`<tr><td><span class="tag">${esc(f.action)}</span></td><td>${esc(f.name)}</td><td class="mut">${dt(f.created_at)}</td></tr>`).join('')}</table>`:'<p class="mut">Belum ada.</p>'}`})};
+  listView(v,{path:'/users',cols:[{label:'Nama',key:'name'},{label:'Kode member',key:'member_code'},{label:'Email',key:'email'},{label:'Telepon',key:'phone'},{label:'Saldo poin',render:u=>(u.points_balance||0).toLocaleString('id-ID')},{label:'Level',key:'tier'},{label:'Status',render:u=>u.is_active?'<span class="tag ok">Aktif</span>':'<span class="tag err">Nonaktif</span>'},{label:'Daftar',render:u=>dt(u.created_at)},{label:'Profil',render:u=>u.has_profile?'<span class="tag ok">ada</span>':'<span class="tag gr">-</span>'},{label:'Umpan balik',key:'feedback_count'}],
+   actions:(u,reload)=>[{label:'Detail',run:()=>detail(u)},
+    {label:'Edit',show:can('admin'),run:()=>formModal({title:'Edit member',values:u,fields:[{name:'name',label:'Nama',req:true,full:true},{name:'email',label:'Email',req:true,full:true},{name:'phone',label:'Telepon',full:true},{name:'is_active',label:'Akun aktif',type:'check'}],submit:async o=>{await api('PUT','/users/'+u.id,o);toast('Tersimpan','ok');reload()}})},
+    {label:u.is_active?'Hapus / nonaktifkan':'Aktifkan kembali',cls:u.is_active?'dng':'',show:can('admin'),run:async()=>{const active=!u.is_active;const msg=active?'Aktifkan kembali akun ini?':'Nonaktifkan akun ini? Riwayat pesanan, poin, dan ulasan tetap disimpan.';if(await confirmBox(msg,active?'Aktifkan':'Nonaktifkan',active?'pri':'dng')){await api('PUT','/users/'+u.id,{name:u.name,email:u.email,phone:u.phone||'',is_active:active});toast(active?'Akun diaktifkan':'Akun dinonaktifkan','ok');reload()}}},
+    {label:'Reset password',show:can('owner'),run:async()=>{if(await confirmBox(`Buat password sementara untuk ${u.email}? Sesi login user ini akan diputus.`,'Reset','pri')){const r=await api('POST','/users/'+u.id+'/reset-password');modal({title:'Password sementara',body:`<p>Berikan ke user (hanya tampil sekali):</p><pre>${esc(r.temporary_password)}</pre>`})}}}]});
+}};
+
+/* ---- voucher / berita / toko (CRUD generik) ---- */
+function crud({path,id,cols,fields,defaults,label,seed}){
+  return v=>{
+    const open=(o,reload)=>{const isNew=!o;formModal({title:(isNew?'Tambah ':'Edit ')+label,fields:isNew?fields:fields.map(f=>f.name===id?{...f,ro:true}:f),values:o||defaults||{},
+      submit:async x=>{if(isNew)await api('POST',path,x);else await api('PUT',path+'/'+encodeURIComponent(o[id]),x);toast('Tersimpan','ok');reload()}})};
+    simpleList(v,{path,cols,empty:`Belum ada ${label}.`,
+      toolbar:(bar,reload)=>{if(!can('admin'))return;const a=document.createElement('button');a.className='btn pri';a.textContent='+ '+label;a.onclick=()=>open(null,reload);bar.append(a);
+        if(seed){const s=document.createElement('button');s.className='btn';s.textContent=seed.label;s.onclick=async()=>{const r=await api('POST',seed.path);toast(r.imported+' data diimpor','ok');reload()};bar.append(s)}},
+      actions:(o,reload)=>[{label:'Edit',show:can('admin'),run:()=>open(o,reload)},{label:'Hapus',cls:'dng',show:can('admin'),run:async()=>{if(await confirmBox(`Hapus ${label} "${o[id]}"?`)){await api('DELETE',path+'/'+encodeURIComponent(o[id]));toast('Dihapus','ok');reload()}}}]});
+  }
+}
+const isoLocal=s=>s?String(s).slice(0,19):'';
+PAGES.vouchers={title:'Voucher',render:crud({path:'/vouchers',id:'code',label:'voucher',
+  defaults:{type:'percent',value:10,min_spend:0,expires_at:'2027-12-31T23:59:00',active:true},
+  cols:[{label:'Kode',render:o=>`<b>${esc(o.code)}</b>`},{label:'Judul',key:'title'},{label:'Jenis',render:o=>`<span class="tag">${esc(o.type)}</span>`},{label:'Nilai',render:o=>o.type==='percent'?o.value+'%'+(o.max_discount?' (maks '+rp(o.max_discount)+')':''):o.type==='fixed'?rp(o.value):'Gratis ongkir'},{label:'Min. belanja',render:o=>rp(o.min_spend)},{label:'Level',render:o=>o.member_only||o.min_tier?esc(o.min_tier||'member'):'semua'},{label:'Berakhir',render:o=>esc(isoLocal(o.expires_at))},{label:'Status',render:o=>o.active?'<span class="tag ok">aktif</span>':'<span class="tag gr">nonaktif</span>'}],
+  fields:[{name:'code',label:'Kode',req:true},{name:'title',label:'Judul',req:true},{name:'description',label:'Deskripsi',type:'textarea',full:true},{name:'type',label:'Jenis',type:'select',options:['percent','fixed','freeShipping']},{name:'value',label:'Nilai (% atau Rp)',type:'number'},{name:'max_discount',label:'Maks. potongan (Rp, untuk %)',type:'number'},{name:'min_spend',label:'Minimal belanja (Rp)',type:'number'},{name:'min_tier',label:'Level minimal',type:'select',options:[['','Semua'],'regular','silver','gold','platinum']},{name:'expires_at',label:'Berakhir (ISO)',req:true,hint:'Contoh 2027-12-31T23:59:00'},{name:'member_only',label:'Khusus member',type:'check'},{name:'active',label:'Aktif',type:'check'}]})};
+PAGES.news={title:'Berita & Promo',render:crud({path:'/news',id:'id',label:'berita',
+  defaults:{category:'info',action:'none',date:new Date().toISOString().slice(0,19),published:true},
+  cols:[{label:'Judul',render:o=>`<b>${esc(o.title)}</b><div class="mut" style="font-size:12px">${esc(o.id)}</div>`},{label:'Kategori',render:o=>`<span class="tag">${esc(o.category)}</span>`},{label:'Tanggal',render:o=>esc(String(o.date).slice(0,10))},{label:'Status',render:o=>(o.published?'<span class="tag ok">tayang</span>':'<span class="tag gr">draf</span>')+(o.is_pinned?' <span class="tag warn">disematkan</span>':'')}],
+  fields:[{name:'id',label:'ID',req:true},{name:'title',label:'Judul',req:true},{name:'summary',label:'Ringkasan',full:true},{name:'content',label:'Isi (pisahkan paragraf dengan baris kosong)',type:'textarea',rows:8,full:true},{name:'image',label:'URL gambar',full:true},{name:'category',label:'Kategori',type:'select',options:['promo','info','koleksi','event','member']},{name:'date',label:'Tanggal (ISO)',req:true},{name:'action',label:'Tombol aksi',type:'select',options:['none','catalog','membership','vouchers']},{name:'action_label',label:'Label tombol'},{name:'is_pinned',label:'Sematkan di atas',type:'check'},{name:'published',label:'Tayangkan',type:'check'}]})};
+PAGES.stores={title:'Toko',render:crud({path:'/stores',id:'id',label:'toko',seed:{label:'Impor 82 toko dari seed',path:'/stores/import-seed'},
+  defaults:{open_hour:10,close_hour:22,services:'Alterasi, Ukuran lengkap, Pickup pesanan'},
+  cols:[{label:'Toko',render:o=>`<b>${esc(o.name)}</b><div class="mut" style="font-size:12px">${esc(o.id)}</div>`},{label:'Kota',render:o=>esc(o.city+(o.province?', '+o.province:''))},{label:'Jam',render:o=>o.open_hour+'.00-'+o.close_hour+'.00'},{label:'Layanan',render:o=>o.services.map(s=>`<span class="tag gr">${esc(s)}</span>`).join(' ')||'<span class="mut">-</span>'}],
+  fields:[{name:'id',label:'ID',req:true},{name:'name',label:'Nama',req:true},{name:'mall',label:'Mal'},{name:'city',label:'Kota',req:true},{name:'province',label:'Provinsi'},{name:'phone',label:'Telepon'},{name:'address',label:'Alamat',type:'textarea',full:true},{name:'lat',label:'Latitude',type:'number',step:'any'},{name:'lng',label:'Longitude',type:'number',step:'any'},{name:'open_hour',label:'Jam buka',type:'number'},{name:'close_hour',label:'Jam tutup',type:'number'},{name:'services',label:'Layanan (pisah koma)',full:true,hint:'Ketik "Pickup pesanan" agar toko muncul di pilihan ambil di toko'}]})};
+
+/* ---- data operasional pelanggan & katalog ---- */
+function dataPage(v,table,cols,empty){
+  listView(v,{path:'/data/'+table,perPage:25,cols,empty:empty||'Belum ada data dari aplikasi.'});
+}
+PAGES.variants={title:'Varian Produk',render(v){dataPage(v,'variants',[
+  {label:'Produk',render:x=>`<b>${esc(x.product_name||'-')}</b><div class="mut">${esc(x.product_id)}</div>`},
+  {label:'Kode warna',key:'color_code'},{label:'Warna',key:'color_name'},{label:'Ukuran',key:'size'},
+  {label:'Harga',render:x=>rp(x.price)},{label:'Harga normal',render:x=>rp(x.original_price)}]);}};
+PAGES.orders={title:'Pesanan',render(v){listView(v,{path:'/data/orders',perPage:25,
+  filters:[{key:'order_status',label:'Semua status pesanan',options:['diproses','dikemas','dikirim','selesai','dibatalkan']},{key:'payment_status',label:'Semua status pembayaran',options:['Pending','Unpaid','Paid','Failed','Refunded']},{key:'payment_method',label:'Semua metode pembayaran',options:['Virtual Account BCA','Mandiri Virtual Account','QRIS / GoPay / OVO','Kartu Kredit / Debit','COD (Bayar di Tempat)']}],
+  cols:[{label:'Nomor pesanan',render:x=>`<b>${esc(x.id)}</b><div class="mut">${esc(String(x.order_date||'').slice(0,19))}</div>`},
+  {label:'Pelanggan',render:x=>`${esc(x.customer)}<div class="mut">${esc(x.email)}</div>`},
+  {label:'Item',key:'item_count'},{label:'Total',render:x=>rp(x.total_price)},
+  {label:'Pembayaran',render:x=>`${esc(x.payment_method)}<div class="mut">${esc(x.payment_status)}</div>`},
+  {label:'Status pesanan',render:x=>`<span class="tag">${esc(x.order_status)}</span>`}],
+  actions:(x,reload)=>[{label:'Detail',run:async()=>{const d=await api('GET','/orders/'+encodeURIComponent(x.id));const o=d.order;const s=o.snapshot||{};const delivery=s.fulfillmentType==='pickup'?`${esc(s.storeName||'-')}<br>${esc(s.storeAddress||'')}`:`${esc(s.recipient||'-')} · ${esc(s.phone||'-')}<br>${esc(s.address||o.address_current?.address||'-')}`;modal({title:'Pesanan '+x.id,body:`<p><b>${esc(o.customer)}</b> · ${esc(o.email)}</p><p>Tanggal: ${esc(String(o.order_date||'').slice(0,19))}</p><p>Status pesanan: ${esc(o.order_status)} · Pembayaran: ${esc(o.payment_status)}<br>Metode: ${esc(o.payment_method||'-')}</p><p>Penerimaan: ${s.fulfillmentType==='pickup'?'Ambil di toko':'Pengiriman'}<br>${delivery}</p><h4>Item pesanan</h4><table>${o.items.map(i=>`<tr><td>${esc(i.product_name)}</td><td>${esc(i.size)} ${esc(i.color_value||'')}</td><td>${i.quantity} × ${rp(i.price)}</td><td>${rp(i.subtotal)}</td></tr>`).join('')}</table><p>Subtotal: ${rp(o.subtotal)}<br>Diskon member: ${rp(s.memberDiscount||0)}<br>Diskon voucher: ${rp(s.voucherDiscount||0)}<br>Diskon poin: ${rp(s.pointsDiscount||0)}<br>Ongkir: ${rp(s.shippingFee||0)}<br>Diskon ongkir: ${rp(s.shippingDiscount||0)}<br>Refund: ${rp(o.refund_amount||0)}</p><p><b>Total ${rp(o.total_price)}</b></p>`})}},{label:'Ubah status',show:can('admin'),run:()=>formModal({title:'Perbarui pesanan '+x.id,values:{order_status:x.order_status,payment_status:x.payment_status},fields:[{name:'order_status',label:'Status pesanan',type:'select',options:[['diproses','Diproses'],['dikemas','Dikemas'],['dikirim','Dikirim'],['selesai','Selesai'],['dibatalkan','Dibatalkan']]},{name:'payment_status',label:'Status pembayaran',type:'select',options:[['Pending','Pending'],['Unpaid','Belum dibayar (COD)'],['Paid','Paid'],['Failed','Failed'],['Refunded','Refunded']]}],submit:async o=>{await api('POST','/orders/'+encodeURIComponent(x.id)+'/status',o);toast('Status pesanan diperbarui','ok');reload()}})}]});}};
+PAGES.orderItems={title:'Item Pesanan',render(v){dataPage(v,'order-items',[
+  {label:'Pesanan',key:'order_id'},{label:'Produk',key:'product_name'},{label:'Ukuran',key:'size'},
+  {label:'Harga',render:x=>rp(x.price)},{label:'Jumlah',key:'quantity'},{label:'Subtotal',render:x=>rp(x.subtotal)},
+  {label:'Email pelanggan',key:'email'}]);}};
+PAGES.addresses={title:'Alamat Pelanggan',render(v){listView(v,{path:'/data/addresses',perPage:25,cols:[
+  {label:'Penerima',key:'recipient_name'},{label:'Pelanggan',render:x=>`${esc(x.customer)}<div class="mut">${esc(x.email)}</div>`},
+  {label:'Telepon',key:'phone'},{label:'Alamat',render:x=>`${esc(x.address)}<div class="mut">${esc(x.city||'')} ${esc(x.postal_code||'')}</div>`},
+  {label:'Default',render:x=>x.is_default?'<span class="tag ok">Utama</span>':'-'},{label:'Dibuat',render:x=>dt(x.created_at)}],
+  actions:(x,reload)=>[{label:'Edit',show:can('admin'),run:()=>formModal({title:'Edit alamat '+x.id,values:x,fields:[{name:'recipient_name',label:'Penerima',req:true},{name:'phone',label:'Telepon',req:true},{name:'address',label:'Alamat',type:'textarea',req:true,full:true},{name:'city',label:'Kota'},{name:'postal_code',label:'Kode pos'},{name:'label',label:'Label'},{name:'is_default',label:'Alamat utama',type:'check'}],submit:async o=>{await api('PUT','/addresses/'+x.id,o);toast('Alamat diperbarui','ok');reload()}})},{label:'Hapus',cls:'dng',show:can('admin'),run:async()=>{if(await confirmBox('Hapus alamat ini?')){await api('DELETE','/addresses/'+x.id);toast('Alamat dihapus','ok');reload()}}}]});}};
+PAGES.cart={title:'Keranjang Pelanggan',render(v){dataPage(v,'cart',[
+  {label:'Pelanggan',render:x=>`${esc(x.customer)}<div class="mut">${esc(x.email)}</div>`},
+  {label:'Produk',key:'product_name'},{label:'Warna',key:'color_code'},{label:'Ukuran',key:'size'},
+  {label:'Jumlah',key:'quantity'},{label:'Dipilih',render:x=>x.is_selected?'Ya':'Tidak'},{label:'Update',render:x=>dt(x.updated_at)}]);}};
+PAGES.wishlist={title:'Wishlist Pelanggan',render(v){dataPage(v,'wishlist',[
+  {label:'Pelanggan',render:x=>`${esc(x.customer)}<div class="mut">${esc(x.email)}</div>`},
+  {label:'Produk',key:'product_name'},{label:'Ditambahkan',render:x=>dt(x.created_at)}]);}};
+PAGES.activities={title:'Aktivitas Member',render(v){dataPage(v,'activities',[
+  {label:'Waktu',key:'created_at'},{label:'Pelanggan',render:x=>`${esc(x.customer)}<div class="mut">${esc(x.email)}</div>`},
+  {label:'Jenis',key:'activity_type'},{label:'Aktivitas',key:'title'},{label:'Detail',key:'detail'},{label:'Poin',key:'points'}]);}};
+PAGES.points={title:'Riwayat Poin Member',render(v){listView(v,{path:'/data/points',perPage:25,toolbar:(bar,reload)=>{if(!can('admin'))return;const b=document.createElement('button');b.className='btn pri';b.textContent='Koreksi poin';b.onclick=()=>formModal({title:'Koreksi ledger poin',fields:[{name:'user_id',label:'ID member',type:'number',req:true},{name:'points_delta',label:'Perubahan poin (+/-)',type:'number',req:true},{name:'reason',label:'Alasan koreksi',type:'textarea',req:true,full:true}],submit:async o=>{await api('POST','/points/adjust',o);toast('Koreksi poin dicatat','ok');reload()}});bar.append(b)},cols:[
+  {label:'Pelanggan',render:x=>`${esc(x.customer)}<div class="mut">${esc(x.email)}</div>`},
+  {label:'Pesanan',key:'order_id'},{label:'Perubahan poin',key:'points_delta'},{label:'Alasan',key:'reason'},{label:'Waktu',render:x=>dt(x.created_at)}]});}};
+PAGES.profiles={title:'Profil Gaya Member',render(v){dataPage(v,'profiles',[
+  {label:'Member',render:x=>`${esc(x.customer)}<div class="mut">${esc(x.email)}</div>`},
+  {label:'Gender',render:x=>esc(x.profile.gender||'-')},{label:'Tinggi',render:x=>esc(x.profile.heightCm||'-')+' cm'},
+  {label:'Berat',render:x=>esc(x.profile.weightKg||'-')+' kg'},
+  {label:'Wajah',render:x=>esc(x.profile.faceShape||'-')},{label:'Undertone',render:x=>esc(x.profile.undertone||'-')},
+  {label:'Diperbarui',render:x=>dt(x.updated_at)}]);}};
+PAGES.reviews={title:'Ulasan Produk',render(v){listView(v,{path:'/data/reviews',perPage:25,cols:[
+  {label:'Produk',key:'product_name'},{label:'Penulis',key:'author'},{label:'Email',key:'email'},
+  {label:'Sumber',render:x=>`<span class="tag">${esc(x.source||'member')}</span>`},
+  {label:'Rating',render:x=>'★'.repeat(Math.max(0,Math.min(5,+x.rating)))},{label:'Ulasan',key:'review_text'},
+  {label:'Tanggal',render:x=>dt(x.created_at)},{label:'Visibilitas',render:x=>x.is_visible?'<span class="tag ok">Tampil</span>':'<span class="tag err">Disembunyikan</span>'}],
+  actions:(x,reload)=>[{label:x.is_visible?'Sembunyikan':'Tampilkan',show:can('admin'),run:async()=>{await api('PUT','/reviews/'+encodeURIComponent(x.id)+'/visibility',{is_visible:!x.is_visible,note:'Moderasi melalui control panel'});toast('Moderasi ulasan disimpan','ok');reload()}}]});}};
+
+/* ---- umpan balik ---- */
+PAGES.feedback={title:'Umpan Balik Pengguna',render(v){
+  listView(v,{path:'/feedback',perPage:25,toolbar:bar=>{const n=document.createElement('span');n.className='mut';n.style.fontSize='12px';n.textContent='Data ini adalah sinyal interaksi produk (like/dislike/cart/view). Status dan catatan hanya untuk tindak lanjut internal admin; tidak dikirim ke aplikasi member.';bar.append(n)},filters:[{key:'action',label:'Semua aksi',options:['like','dislike','cart','view']}],
+    cols:[{label:'Waktu',render:f=>dt(f.created_at)},{label:'Aksi',render:f=>`<span class="tag ${f.action==='dislike'?'err':f.action==='cart'?'ok':''}">${esc(f.action)}</span>`},{label:'Produk',render:f=>esc(f.product)},{label:'Pengguna',key:'email'},{label:'Status peninjauan (internal)',render:f=>({new:'Baru',in_progress:'Diproses',resolved:'Selesai'}[f.status||'new']||esc(f.status))},{label:'Catatan internal admin',key:'admin_note'}],
+    actions:(f,reload)=>[{label:'Catat tindak lanjut',show:can('admin'),run:()=>formModal({title:'Catatan internal feedback #'+f.id,values:{status:f.status||'new',admin_note:f.admin_note||''},fields:[{name:'status',label:'Status',type:'select',options:[['new','Baru'],['in_progress','Diproses'],['resolved','Selesai']]},{name:'admin_note',label:'Catatan admin',type:'textarea',full:true}],submit:async o=>{await api('PUT','/feedback/'+f.id+'/status',o);toast('Tindak lanjut disimpan','ok');reload()}})}]});
+}};
+
+/* ---- model ML ---- */
+PAGES.ml={title:'Model Machine Learning',async render(v){
+  const st=await api('GET','/ml/status');
+  v.innerHTML=`<div class="grid cols2"><div class="card"><b>Status pelatihan</b><p>Python & library: ${st.python_deps_ok?'<span class="tag ok">siap</span>':'<span class="tag err">belum (pip install -r ml/requirements.txt)</span>'}</p><p>Baris umpan balik yang bisa dilatih: <b>${st.trainable_feedback_rows}</b></p>
+  <p class="mut" style="font-size:12px">Dataset di <code>ml/data/raw/</code>: ${st.raw_files.length?st.raw_files.map(f=>`<span class="tag gr">${esc(f.name)}${f.dir?'/':''}</span>`).join(' '):'<i>kosong - lihat ml/DATASETS.md untuk dataset Kaggle yang dipakai</i>'}</p>
+  <div class="bar" style="margin-bottom:0">${can('owner')?'<button class="btn pri" id="trainBtn">Latih ulang model</button>':''}${can('admin')?'<button class="btn" id="upBtn">Unggah model.json</button>':''}${can('admin')?'<button class="btn" id="deBtn">Pakai model bawaan</button>':''}</div></div>
+  <div class="card note info" style="border-radius:10px"><b>Cara membaca sumber model</b><br><span class="tag gr">prior:theory</span> aturan teori, belum dilatih<br><span class="tag warn">trained:synthetic</span> dilatih dari simulasi pengguna (bootstrap)<br><span class="tag ok">trained:real</span> dilatih dari dataset/foto nyata<br><span class="mut">+feedback = ikut memakai umpan balik pengguna aplikasi.</span></div></div>
+  <h3 style="margin:22px 0 10px">Versi model</h3><div id="mlist"></div>`;
+  const list=simpleList($('#mlist',v),{path:'/ml/models',empty:'Belum ada model di server. Aplikasi memakai model bawaan.',
+    cols:[{label:'#',key:'id'},{label:'Versi',render:m=>`<b>${esc(m.version)}</b>`},{label:'Asal',render:m=>`<span class="tag gr">${esc(m.origin)}</span>`},{label:'Dibuat',render:m=>dt(m.created_at)},
+     {label:'Komponen',render:m=>Object.entries(m.sources).map(([k,s])=>`<div class="nowrap" style="font-size:12px">${esc(k)} <span class="tag ${s.startsWith('trained:real')?'ok':s.startsWith('trained')?'warn':'gr'}">${esc(s)}</span></div>`).join('')},
+     {label:'Data',render:m=>m.datasets.map(d=>`<div style="font-size:12px">${esc(d.name)} <span class="mut">(${d.kind}, ${d.rows} baris)</span></div>`).join('')},{label:'Status',render:m=>m.active?'<span class="tag ok">AKTIF</span>':''}],
+    actions:(m,reload)=>[{label:'Bukti & metrik',run:()=>showModel(m.id)},{label:'Aktifkan',show:can('admin')&&!m.active,run:async()=>{await api('POST','/ml/models/'+m.id+'/activate');toast('Model diaktifkan. Aplikasi mengunduhnya saat sinkron.','ok');reload()}},{label:'Hapus',cls:'dng',show:can('admin')&&!m.active,run:async()=>{if(await confirmBox('Hapus versi model ini?')){await api('DELETE','/ml/models/'+m.id);reload()}}}]});
+  const showModel=async id=>{const d=await api('GET','/ml/models/'+id);const m=d.model;
+    modal({title:'Model '+m.version,body:`<h4>Bukti data</h4><div class="tw"><table><tr><th>Dataset</th><th>Jenis</th><th>Baris</th><th>SHA-256</th><th>Dipakai untuk</th></tr>${m.datasets.map(x=>`<tr><td>${esc(x.name)}${x.url?`<div style="font-size:11px"><a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.url)}</a></div>`:''}</td><td><span class="tag ${x.kind==='real'?'ok':'warn'}">${esc(x.kind)}</span></td><td>${esc(x.rows)}</td><td style="font-size:11px">${esc((x.sha256||'-').slice(0,16))}</td><td>${esc((x.used_for||[]).join(', '))}</td></tr>`).join('')}</table></div>
+    <h4>Metrik</h4><pre>${esc(JSON.stringify(m.metrics,null,1))}</pre><h4>Laporan pelatihan</h4><pre>${esc(d.report||'(tidak ada)')}</pre>`})};
+  const tb=$('#trainBtn',v);if(tb)tb.onclick=()=>{
+    const opt=(k,dir)=>[['','(tidak dipakai)'],...st.raw_files.filter(f=>f.dir===dir).map(f=>[f.name,f.name])];
+    formModal({title:'Latih ulang model',fields:[{name:'use_feedback',label:'Pakai umpan balik pengguna nyata dari database',type:'check',def:true,full:true},
+      {name:'styles',label:'styles.csv (Kaggle Fashion Product Images)',type:'select',options:opt('styles',false)},{name:'faces',label:'Folder foto bentuk wajah',type:'select',options:opt('faces',true)},
+      {name:'skin_csv',label:'CSV foto berlabel Monk Skin Tone',type:'select',options:opt('skin',false)},{name:'pairs',label:'CSV pasangan warna outfit',type:'select',options:opt('pairs',false)},
+      {name:'note',label:'Catatan',full:true},{name:'activate',label:'Langsung aktifkan setelah selesai',type:'check',full:true}],
+      values:{use_feedback:true},submit:async(o,ov)=>{toast('Pelatihan berjalan, mohon tunggu...');const r=await api('POST','/ml/train',o);toast('Selesai: '+r.version,'ok');list();}});};
+  const ub=$('#upBtn',v);if(ub)ub.onclick=()=>{const f=document.createElement('input');f.type='file';f.accept='.json';f.onchange=async()=>{try{const model=JSON.parse(await f.files[0].text());
+    formModal({title:'Unggah model '+(model.version||''),fields:[{name:'note',label:'Catatan',full:true},{name:'activate',label:'Langsung aktifkan',type:'check',full:true}],submit:async o=>{await api('POST','/ml/models',{model,note:o.note,activate:o.activate});toast('Model diunggah','ok');list()}})}catch(e){toast('Berkas bukan JSON valid','err')}};f.click()};
+  const de=$('#deBtn',v);if(de)de.onclick=async()=>{if(await confirmBox('Nonaktifkan semua model di server? Aplikasi kembali memakai model bawaan (assets/data/ml_model.json).','Ya, nonaktifkan','pri')){await api('POST','/ml/models/deactivate');list()}};
+}};
+
+/* ---- audit ---- */
+PAGES.audit={title:'Log Audit',render(v){listView(v,{path:'/audit',search:false,perPage:30,cols:[{label:'Waktu',render:a=>dt(a.at)},{label:'Admin',key:'admin'},{label:'Aksi',render:a=>`<span class="tag">${esc(a.action)}</span>`},{label:'Objek (jenis / ID)',render:a=>`<b>${esc(a.entity||'-')}</b><div class="mut">${esc(a.entity_id||'-')}</div>`},{label:'Detail',key:'detail'}]})}};
+
+/* ---- admin ---- */
+PAGES.admins={title:'Admin & Akses',render(v){
+  const roles=[['admin','Admin (operasional & konten)'],['owner','Owner (semua hak akses)']];
+  simpleList(v,{path:'/admins',cols:[{label:'Username',render:a=>`<b>${esc(a.username)}</b>`},{label:'Nama',key:'name'},{label:'Peran',render:a=>`<span class="tag">${esc(a.role)}</span>`},{label:'Status',render:a=>a.active?'<span class="tag ok">aktif</span>':'<span class="tag gr">nonaktif</span>'},{label:'Login terakhir',render:a=>dt(a.last_login)}],
+    toolbar:(bar,reload)=>{const b=document.createElement('button');b.className='btn pri';b.textContent='+ Admin';b.onclick=()=>formModal({title:'Tambah admin',fields:[{name:'username',label:'Username',req:true},{name:'name',label:'Nama'},{name:'password',label:'Password (min. 8)',type:'password',req:true},{name:'role',label:'Peran',type:'select',options:roles,def:'admin'}],submit:async o=>{await api('POST','/admins',o);toast('Admin ditambahkan','ok');reload()}});bar.append(b)},
+    actions:(a,reload)=>[{label:'Edit',run:()=>formModal({title:'Edit '+a.username,values:a,fields:[{name:'name',label:'Nama'},{name:'role',label:'Peran',type:'select',options:roles},{name:'password',label:'Password baru (kosongkan bila tidak diganti)',type:'password',full:true},{name:'active',label:'Aktif',type:'check'}],submit:async o=>{if(!o.password)delete o.password;await api('PUT','/admins/'+a.id,o);toast('Tersimpan','ok');reload()}})},{label:'Hapus',cls:'dng',show:ME.role==='owner'&&a.id!==ME.id,run:async()=>{const pw=prompt('Masukkan password Owner yang sedang login untuk menghapus '+a.username+':');if(pw===null||!pw)return;await api('DELETE','/admins/'+a.id,{confirm_password:pw});toast('Akun admin dihapus','ok');reload()}}]});
+}};
+
+/* ================= SHELL ================= */
+const MENU=[['dashboard','Dashboard',''],['products','Produk','Konten'],['variants','Varian Produk',''],['news','Berita & Promo',''],['vouchers','Voucher',''],['stores','Toko',''],['users','Pengguna / Member','Pelanggan'],['addresses','Alamat Pelanggan',''],['orders','Pesanan',''],['orderItems','Item Pesanan',''],['cart','Keranjang',''],['wishlist','Wishlist',''],['activities','Aktivitas Member',''],['points','Riwayat Poin',''],['profiles','Profil Gaya',''],['reviews','Ulasan Produk',''],['feedback','Umpan Balik Produk',''],['ml','Model ML','Machine Learning'],['audit','Log Audit','Sistem'],['admins','Admin & Akses','']];
+function buildNav(){const n=$('#nav');n.innerHTML='';MENU.forEach(([k,l,g])=>{if(k==='admins'&&ME.role!=='owner')return;if(g){const d=document.createElement('div');d.className='grp';d.textContent=g;n.append(d)}const b=document.createElement('button');b.dataset.k=k;b.textContent=l;b.onclick=()=>go(k);n.append(b)})}
+async function go(k){
+  if(!PAGES[k])k='dashboard';location.hash=k;
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+  $('#title').textContent=PAGES[k].title;const v=$('#view');v.innerHTML='<div class="empty">Memuat...</div>';
+  try{v.innerHTML='';await PAGES[k].render(v)}catch(e){v.innerHTML=`<div class="note">${esc(e.message)}</div>`}
+}
+/* Real-time SSE Connection */
+let sseSource = null;
+function initRealtimeAdmin(){
+  if (sseSource) return;
+  try {
+    sseSource = new EventSource('/admin/events');
+    sseSource.addEventListener('connected', () => console.log('SSE connected'));
+    sseSource.addEventListener('new_user', (e) => {
+      const d = JSON.parse(e.data);
+      toast(`🎉 User baru mendaftar: ${d.name || d.email}`, 'ok');
+      const cur = location.hash.slice(1) || 'dashboard';
+      if (cur === 'users' || cur === 'dashboard') go(cur);
+    });
+    sseSource.addEventListener('new_order', (e) => {
+      const d = JSON.parse(e.data);
+      toast(`🛒 Pesanan Baru #${d.id} (Rp ${(+d.total||0).toLocaleString('id-ID')})`, 'ok');
+      const cur = location.hash.slice(1) || 'dashboard';
+      if (cur === 'orders' || cur === 'dashboard') go(cur);
+    });
+    sseSource.addEventListener('order_updated', (e) => {
+      const d = JSON.parse(e.data);
+      toast(`📦 Status Pesanan #${d.id}: ${d.status}`, 'ok');
+      const cur = location.hash.slice(1) || 'dashboard';
+      if (cur === 'orders' || cur === 'dashboard') go(cur);
+    });
+    sseSource.onerror = () => {
+      if (sseSource) { sseSource.close(); sseSource = null; }
+      setTimeout(initRealtimeAdmin, 5000);
+    };
+  } catch(e){ console.error('SSE Error:', e); }
+}
+function stopRealtimeAdmin(){
+  if (sseSource) { sseSource.close(); sseSource = null; }
+}
+
+function showApp(){$('#login').classList.add('hidden');$('#app').classList.remove('hidden');$('#who').textContent=ME.name+' ('+ME.role+')';buildNav();go(location.hash.slice(1)||'dashboard');initRealtimeAdmin();}
+function logout(silent){stopRealtimeAdmin();TOKEN='';ME=null;sessionStorage.removeItem('uplus_admin');if(!silent)api('POST','/logout').catch(()=>{});$('#app').classList.add('hidden');$('#login').classList.remove('hidden')}
+$('#outBtn').onclick=async()=>{try{await api('POST','/logout')}catch(e){}logout(true)};
+$('#pwBtn').onclick=()=>formModal({title:'Ganti password',fields:[{name:'old_password',label:'Password lama',type:'password',full:true},{name:'new_password',label:'Password baru (min. 8)',type:'password',full:true}],submit:async o=>{await api('PUT','/me',o);toast('Password diganti','ok')}});
+$('#loginForm').onsubmit=async e=>{e.preventDefault();$('#lerr').textContent='';$('#lbtn').disabled=true;
+  try{const r=await api('POST','/login',{username:$('#lu').value,password:$('#lp').value});TOKEN=r.token;ME=r.admin;sessionStorage.setItem('uplus_admin',TOKEN);$('#lp').value='';showApp()}
+  catch(err){$('#lerr').textContent=err.message}finally{$('#lbtn').disabled=false}};
+window.addEventListener('hashchange',()=>{if(ME)go(location.hash.slice(1))});
+(async()=>{if(TOKEN){try{ME=(await api('GET','/me')).admin;showApp()}catch(e){logout(true)}}})();
+</script>
+</body>
+</html>

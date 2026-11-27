@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Latar saat aplikasi mulai dibuka: sama dengan warna video pembuka
+     (UNIQLO PLUS) supaya tidak ada kilatan putih sebelum animasi logo. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#0D1213" />
+        </shape>
+    </item>
+</layer-list>
