@@ -56,7 +56,13 @@ class ApiService extends ChangeNotifier {
 
   /// Alamat server bawaan sesuai platform.
   static String defaultBaseUrl() {
-    if (kIsWeb) return 'http://localhost:8000';
+    if (kIsWeb) {
+      final origin = Uri.base.origin;
+      if (origin.contains('localhost') || origin.contains('127.0.0.1')) {
+        return 'http://localhost:8000';
+      }
+      return origin;
+    }
     if (defaultTargetPlatform == TargetPlatform.android) {
       // 10.0.2.2 = komputer host dari dalam emulator Android.
       return 'http://10.0.2.2:8000';

@@ -734,6 +734,44 @@ class Handler(BaseHTTPRequestHandler):
             if path == '/api/me':
                 return self._send(200, {'user': Store._user(user)})
             return self._send(200, self.store.get_profile(user['id']))
+
+        # -- Serve Flutter Web static files --
+        web_dir = HERE / 'web'
+        if web_dir.is_dir():
+            rel_path = path.lstrip('/')
+            file_path = web_dir / rel_path
+            if rel_path == '' or not file_path.exists() or file_path.is_dir():
+                file_path = web_dir / 'index.html'
+            if file_path.exists() and file_path.is_file():
+                ext = file_path.suffix.lower()
+                content_types = {
+                    '.html': 'text/html; charset=utf-8',
+                    '.js': 'application/javascript',
+                    '.css': 'text/css',
+                    '.json': 'application/json',
+                    '.png': 'image/png',
+                    '.jpg': 'image/jpeg',
+                    '.jpeg': 'image/jpeg',
+                    '.svg': 'image/svg+xml',
+                    '.ico': 'image/x-icon',
+                    '.ttf': 'font/ttf',
+                    '.woff': 'font/woff',
+                    '.woff2': 'font/woff2',
+                    '.wasm': 'application/wasm',
+                }
+                ct = content_types.get(ext, 'application/octet-stream')
+                try:
+                    data = file_path.read_bytes()
+                    self.send_response(200)
+                    self.send_header('Content-Type', ct)
+                    self.send_header('Content-Length', str(len(data)))
+                    self.send_header('Access-Control-Allow-Origin', '*')
+                    self.end_headers()
+                    self.wfile.write(data)
+                    return
+                except Exception:
+                    pass
+
         self._error(404, 'Endpoint tidak ditemukan.')
 
     def do_POST(self):
